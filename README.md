@@ -14,3 +14,4 @@ Danniswara Abdullah 2271020011
  - Pastikan Untuk Run Sql File Yang Tersedia Pada LocalHost Masing2
  - Untuk Login Admin (Email : admin@admin.com   PW : admin123)
  - Untuk Login/Register Customer Bisa Mendaftar Secara Manual
+ - Pastikan Untuk Menghapus isi $pass pada db.php (jika ada)
