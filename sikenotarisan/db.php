@@ -3,7 +3,7 @@
 $host = 'localhost';
 $db   = 'notaris';  
 $user = 'root';     
-$pass = 'password_baru';         
+$pass = '';         
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
