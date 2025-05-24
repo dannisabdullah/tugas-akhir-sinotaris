@@ -79,3 +79,13 @@ INSERT INTO services (name, description) VALUES
 ('Pengurusan Sertifikat', 'Membantu pengurusan sertifikat tanah dan dokumen properti lainnya.'),
 ('Layanan Lainnya', 'Layanan notaris lainnya sesuai kebutuhan klien.')
 ON DUPLICATE KEY UPDATE name=name;
+
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
