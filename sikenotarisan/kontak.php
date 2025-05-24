@@ -1,19 +1,31 @@
 <?php
-$title = "Kontak Kami - Notaris R. Dewi Agung";
-include 'header.php';
-include 'navbar.php';
+ob_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once 'db.php';
+
     $name = $_POST['name'] ?? '';
     $email = $_POST['email'] ?? '';
     $phone = $_POST['phone'] ?? '';
     $subject = $_POST['subject'] ?? '';
     $message = $_POST['message'] ?? '';
-    
-    // Here you would typically process the form data
-    // For example, send an email or save to database
-    $success = true;
+
+    try {
+        $stmt = $pdo->prepare("INSERT INTO messages (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$name, $email, $phone, $subject, $message]);
+        // After successful insertion, redirect to avoid form resubmission on refresh
+        header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
+        exit();
+    } catch (PDOException $e) {
+        error_log("Database insert error: " . $e->getMessage());
+        // Optionally, handle error display to user here
+        die("Failed to save message. Please try again later.");
+    }
 }
+
+$title = "Kontak Kami - Notaris R. Dewi Agung";
+include 'header.php';
+include 'navbar.php';
 ?>
 
 <div class="min-h-screen bg-gray-50 py-12">
@@ -102,13 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="bg-white rounded-xl shadow-lg overflow-hidden fade-in-right">
                 <div class="p-8">
                     <h2 class="text-2xl font-notaris text-gray-900 mb-6">Kirim Pesan</h2>
-                    <?php if (isset($success)): ?>
-                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
-                            <strong class="font-bold">Terima kasih!</strong>
-                            <span class="block sm:inline"> Pesan Anda telah terkirim. Kami akan segera menghubungi Anda.</span>
-                        </div>
-                    <?php endif; ?>
-                    <form action="" method="POST" class="space-y-6">
+                    <div id="successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert" style="<?php echo (isset($_GET['success']) && $_GET['success'] == '1') ? 'display:block;' : 'display:none;'; ?>">
+                        <strong class="font-bold">Terima kasih!</strong>
+                        <span class="block sm:inline"> Pesan Anda telah terkirim. Kami akan segera menghubungi Anda.</span>
+                    </div>
+                    <form action="" method="POST" class="space-y-6" id="contactForm">
                         <div class="grid grid-cols-1 gap-6">
                             <!-- Name -->
                             <div>
@@ -147,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             <!-- Submit Button -->
                             <div>
-                                <button type="submit"
+                                <button type="submit" id="submitBtn"
                                     class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
                                     Kirim Pesan
                                 </button>
@@ -235,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.animationPlayState = 'paused';
         observer.observe(el);
     });
-});
+
 </script>
 
 <?php include 'footer.php'; ?>
