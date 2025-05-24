@@ -1,4 +1,5 @@
 <?php
+session_start();
 $title = "Layanan Notaris";
 include 'header.php';
 include 'navbar.php';
@@ -146,7 +147,7 @@ include 'navbar.php';
     </div>
 
     <div class="text-center mt-12">
-      <a href="layanan.php" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+      <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true ? 'layanan.php' : 'log.php'; ?>" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
         Buat Reservasi
         <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
